@@ -2,42 +2,69 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora Slugterra</title>
+  <title>Reaper: Calculadora Slugterra</title>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
       padding: 50px;
-    }
+    } 
     select, button {
       margin: 10px;
       padding: 8px;
       font-size: 16px;
     }
+    .grilla {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      justify-items: center;
+      align-items: start;
+    }
+    .babosa {
+      border: 2px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 300px;
+      background: #f8f8f8;
+    }
+    .stats {
+      margin-top: 15px;
+      text-align: left;
+      font-family: monospace;
+      white-space: pre-line;
+    }
   </style>
 </head>
 <body>
-  <h1>Calculadora Slugterra</h1>
+  <h1>Calculadora Bajoterra: Renegados del Abismo</h1>
 
-  <div>
-    <h2>Babosa 1</h2>
-    <select id="slug1"></select>
-    <label>
-      <input type="checkbox" id="malvada1"> ¿Malvada?
-    </label>
-    <button onclick="seleccionarBabosa(1)">Aceptar</button>
+  <div class="grilla">
+    <!-- Babosa 1 (o atacante) -->
+    <div class="babosa">
+      <h2>Babosa 1</h2>
+      <select id="slug1"></select>
+      <label>
+        <input type="checkbox" id="malvada1">¿Es una malvada?
+      </label>
+      <button onclick="seleccionarBabosa(1)">Aceptar</button>
+      <div class="stats" id="stats1"></div>
+    </div>
+
+    <!-- Babosa 1 (o defensora) -->
+    <div class="babosa">
+      <h2>Babosa 2</h2>
+      <select id="slug2"></select>
+      <label>
+        <input type="checkbox" id="malvada2">¿Es una malvada?
+      </label>
+      <button onclick="seleccionarBabosa(2)">Aceptar</button>
+      <div class="stats" id="stats2"></div>
+    </div>
   </div>
-
-  <div>
-    <h2>Babosa 2</h2>
-    <select id="slug2"></select>
-    <label>
-      <input type="checkbox" id="malvada2"> ¿Malvada?
-    </label>
-    <button onclick="seleccionarBabosa(2)">Aceptar</button>
-  </div>
-
 
   <script src="script.js"></script>
 </body>
+
 </html>
