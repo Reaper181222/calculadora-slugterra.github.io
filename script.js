@@ -2,9 +2,6 @@ let datosBabosas = {};
 
 async function cargarOpciones() {
   try {
-    const res = await fetch("babosas.json");
-    datosBabosas = await res.json();
-
     const nombres = Object.keys(datosBabosas);
 
     [1, 2].forEach(num => {
