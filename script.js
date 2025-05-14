@@ -5,9 +5,6 @@ function cargarOpciones() {
     const select = document.getElementById(`slug${num}`);
     const checkbox = document.getElementById(`malvada${num}`);
 
-    // Borra opciones anteriores por si ya se llenaron
-    select.innerHTML = "";
-
     // llena select
     nombres.forEach((nombre, index) => {
       const option = document.createElement("option");
