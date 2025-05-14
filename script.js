@@ -14,6 +14,7 @@ async function cargarOpciones() {
       // llena select
       nombres.forEach(nombre => {
         const option = document.createElement("option");
+        option.selected = (index === 0);
         option.value = nombre;
         option.textContent = nombre;
         select.appendChild(option);
