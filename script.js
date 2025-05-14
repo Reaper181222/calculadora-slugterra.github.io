@@ -37,7 +37,7 @@ function mostrarStats(num) {
     for (let key in stats) {
       if (key === "Elemento") continue;
       if (key === "Control") {
-        stats[key] -= 40;
+        stats[key] -= 50;
       } else {
         stats[key] += 20;
       }
