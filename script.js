@@ -1,34 +1,29 @@
-let datosBabosas = {};
+function cargarOpciones() {
+  const nombres = Object.keys(datosBabosas); // datosBabosas viene de babosas.js
 
-async function cargarOpciones() {
-  try {
-    const nombres = Object.keys(datosBabosas);
+  [1, 2].forEach(num => {
+    const select = document.getElementById(`slug${num}`);
+    const checkbox = document.getElementById(`malvada${num}`);
 
-    [1, 2].forEach(num => {
-      const select = document.getElementById(`slug${num}`);
-      const checkbox = document.getElementById(`malvada${num}`);
+    // Borra opciones anteriores por si ya se llenaron
+    select.innerHTML = "";
 
-      // llena select
-      nombres.forEach(nombre => {
-        const option = document.createElement("option");
-        option.value = nombre;
-        option.textContent = nombre;
-        select.appendChild(option);
-      });
-
-      select.value = nombres[0];
-
-      // listeners para actualizar los stats al toque
-      select.addEventListener("change", () => mostrarStats(num));
-      checkbox.addEventListener("change", () => mostrarStats(num));
-
-      // Mostrar stats por defecto (primer opción)
-      mostrarStats(num);
+    // llena select
+    nombres.forEach((nombre, index) => {
+      const option = document.createElement("option");
+      option.value = nombre;
+      option.textContent = nombre;
+      if (index === 0) option.selected = true;
+      select.appendChild(option);
     });
 
-  } catch (error) {
-    console.error("Error al cargar las babosas:", error);
-  }
+    // listeners para actualizar los stats al toque
+    select.addEventListener("change", () => mostrarStats(num));
+    checkbox.addEventListener("change", () => mostrarStats(num));
+
+    // Mostrar stats por defecto (primer opción)
+    mostrarStats(num);
+  });
 }
 
 function mostrarStats(num) {
