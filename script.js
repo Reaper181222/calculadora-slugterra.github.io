@@ -1,6 +1,4 @@
 let datosBabosas = {};
-const option = '';
-option.selected = (index === 0);
 
 async function cargarOpciones() {
   try {
@@ -16,11 +14,12 @@ async function cargarOpciones() {
       // llena select
       nombres.forEach(nombre => {
         const option = document.createElement("option");
-        option.selected = (index === 0);
         option.value = nombre;
         option.textContent = nombre;
         select.appendChild(option);
       });
+
+      select.value = nombres[0];
 
       // listeners para actualizar los stats al toque
       select.addEventListener("change", () => mostrarStats(num));
