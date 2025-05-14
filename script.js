@@ -1,4 +1,6 @@
 let datosBabosas = {};
+const option = '';
+option.selected = (index === 0);
 
 async function cargarOpciones() {
   try {
