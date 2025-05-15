@@ -53,6 +53,13 @@ function mostrarStats(num) {
     `Precisión: ${stats["Precisión"]}\n` +
     `Control: ${stats["Control"]}\n` +
     `Elemento: ${stats["Elemento"]}`;
+
+  const img = document.getElementById(`foto${num}`);
+    if (malvada && original["Foto Malvada"]) {
+      img.src = original["Foto Malvada"];
+    } else {
+      img.src = original["Foto Normal"];
+    }
 }
 
 function seleccionarBabosa(num) {
