@@ -19,7 +19,7 @@ const datosBabosas = {
     "Control": 90,
     "Elemento": "Tierra",
     "Foto Normal": "https://static.wikia.nocookie.net/bajoterra-slug/images/4/45/Babosa_aracniredes_.png/revision/latest/scale-to-width/360?cb=20131107233319&path-prefix=es",
-    "Foto Malvada": null
+    "Foto Malvada": "https://static.wikia.nocookie.net/bajoterra-slug/images/d/d2/Descarga_attaknet.jpg/revision/latest?cb=20140428224852&path-prefix=es"
   },
   "Arenosa": {
     "Ataque": 75,
@@ -29,7 +29,7 @@ const datosBabosas = {
     "Precisión": 70,
     "Control": 80,
     "Elemento": "Tierra",
-    "Foto Normal": null,
-    "Foto Malvada": null
+    "Foto Normal": "https://static.wikia.nocookie.net/bajoterra-slug/images/2/2d/Babosa_arenoza.png/revision/latest/scale-to-width/360?cb=20131223151406&path-prefix=es",
+    "Foto Malvada": "https://static.wikia.nocookie.net/bajoterra-slug/images/9/92/Sand-mangler1.png/revision/latest/scale-to-width/360?cb=20250423061805&path-prefix=es"
   }
 };
