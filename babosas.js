@@ -8,7 +8,7 @@ const datosBabosas = {
     "Control": 85,
     "Elemento": "Agua",
     "Foto Normal": "/Babosas/aquabeek_normal.png",
-    "Foto Malvada": "/abosas/aquabeek_malvada.png"
+    "Foto Malvada": "/Babosas/aquabeek_malvada.png"
   },
   "Aracnired": {
     "Ataque": 40,
