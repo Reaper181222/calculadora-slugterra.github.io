@@ -1,5 +1,5 @@
 const datosBabosas = {
-  "AquaBeek": {
+  "Aquabeek": {
     "Ataque": 70,
     "Defensa": 50,
     "Velocidad": 90,
