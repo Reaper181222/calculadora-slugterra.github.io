@@ -55,11 +55,8 @@ function mostrarStats(num) {
     `Elemento: ${stats["Elemento"]}`;
 
   const img = document.getElementById(`foto${num}`);
-    if (malvada && original["Foto Malvada"]) {
-      img.src = original["Foto Malvada"];
-    } else {
-      img.src = original["Foto Normal"];
-    }
+  const estado = malvada ? "Mlvada" : "Normal";
+  img.src = `Babosas/${especie}_${estado}.png`;
 }
 
 function seleccionarBabosa(num) {
