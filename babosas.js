@@ -16,14 +16,5 @@ const datosBabosas = {
     "Precisión": 80,
     "Control": 90,
     "Elemento": "Tierra"
-  },
-  "Arenosa": {
-    "Ataque": 75,
-    "Defensa": 80,
-    "Velocidad": 90,
-    "Energía Elemental": 60,
-    "Precisión": 70,
-    "Control": 80,
-    "Elemento": "Tierra"
   }
 };
