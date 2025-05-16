@@ -7,8 +7,8 @@ const datosBabosas = {
     "Precisión": 60,
     "Control": 85,
     "Elemento": "Agua",
-    "Foto Normal": "Babosas/aquabeek_normal.png",
-    "Foto Malvada": "abosas/aquabeek_malvada.png"
+    "Foto Normal": "/Babosas/aquabeek_normal.png",
+    "Foto Malvada": "/abosas/aquabeek_malvada.png"
   },
   "Aracnired": {
     "Ataque": 40,
