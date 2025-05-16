@@ -26,4 +26,14 @@ const datosBabosas = {
     "Control": 80,
     "Elemento": "Tierra"
   }
+  ,
+  "Bengala": {
+    "Ataque": 50,
+    "Defensa": 45,
+    "Velocidad": 75,
+    "Energía Elemental": 50,
+    "Precisión": 60,
+    "Control": 85,
+    "Elemento": "Fuego"
+  }
 };
