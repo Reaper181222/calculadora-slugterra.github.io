@@ -56,7 +56,7 @@ function mostrarStats(num) {
 
   const img = document.getElementById(`foto${num}`);
   const estado = malvada ? "Malvada" : "Normal";
-  img.src = `https://reaper181222.github.io/calculadora-slugterra.github.io/Babosas/${especie}_${estado}.png`;
+  img.src = `/Babosas/${especie}_${estado}.png`;
 }
 
 function seleccionarBabosa(num) {
