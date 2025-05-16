@@ -7,8 +7,8 @@ const datosBabosas = {
     "Precisión": 60,
     "Control": 85,
     "Elemento": "Agua",
-    "Foto Normal": "https://static.wikia.nocookie.net/bajoterra-info/images/4/43/AquaBeeks_1.png/revision/latest/scale-to-width-down/250?cb=20130806174154&path-prefix=es",
-    "Foto Malvada": "https://static.wikia.nocookie.net/bajoterra-slug/images/c/ca/Aquafreak_Protoform.png/revision/latest?cb=20131225184921&path-prefix=es"
+    "Foto Normal": "Babosas/aquabeek_normal.png",
+    "Foto Malvada": "abosas/aquabeek_malvada.png"
   },
   "Aracnired": {
     "Ataque": 40,
