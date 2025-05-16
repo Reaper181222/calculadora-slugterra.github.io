@@ -55,7 +55,7 @@ function mostrarStats(num) {
     `Elemento: ${stats["Elemento"]}`;
 
   const img = document.getElementById(`foto${num}`);
-  const estado = malvada ? "Mlvada" : "Normal";
+  const estado = malvada ? "Malvada" : "Normal";
   img.src = `Babosas/${especie}_${estado}.png`;
 }
 
