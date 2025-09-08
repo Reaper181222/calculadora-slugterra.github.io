@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babosas de Bajoterra</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+h1 { text-align: center; }
+.container { max-width: 900px; margin: 0 auto; }
+.selectors { display: flex; justify-content: space-between; margin-bottom: 20px; }
+select { padding: 5px; font-size: 16px; width: 48%; }
+.babosa-info { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+.babosa-info img { max-width: 250px; display: block; margin-bottom: 15px; }
+pre { white-space: pre-wrap; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>Babosas de Bajoterra</h1>
+<div class="selectors">
+    <select id="puras"><option value="">Cargando babosas puras...</option></select>
+    <select id="malvadas"><option value="">Cargando babosas malvadas...</option></select>
+</div>
+<div class="babosa-info" id="babosa-info"><p>Selecciona una babosa para ver sus datos.</p></div>
+</div>
+
+<script>
+// Cache para no recargar babosas seleccionadas
+const cacheBabosas = {};
+
+// Función para obtener babosas desde la API de Fandom
+async function obtenerBabosasDesdeCategoriaAPI(category) {
+    const url = `https://bajoterra.fandom.com/api.php?action=query&list=categorymembers&cmtitle=${encodeURIComponent(category)}&cmlimit=500&format=json`;
+    const res = await fetch(url);
+    const data = await res.json();
+    return data.query.categorymembers.map(item => ({
+        nombre: item.title,
+        url: `https://bajoterra.fandom.com/wiki/${encodeURIComponent(item.title.replace(/ /g, '_'))}`
+    }));
+}
+
+// Función para obtener datos de una babosa al seleccionarla
+async function obtenerDatosBabosa(url) {
+    if (cacheBabosas[url]) return cacheBabosas[url];
+    
+    // Fetch del HTML de la babosa usando AllOrigins para CORS
+    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+    const res = await fetch(proxyUrl);
+    const data = await res.json();
+    const doc = new DOMParser().parseFromString(data.contents, 'text/html');
+
+    const img = doc.querySelector('.pi-image-thumbnail') || doc.querySelector('.wikia-gallery-item img');
+    const png = img ? img.src : '';
+    const nombre = doc.querySelector('.page-header__title')?.textContent.trim() || '';
+    const infobox = doc.querySelector('.portable-infobox');
+    let descripcion = '';
+    if (infobox) {
+        descripcion = Array.from(infobox.querySelectorAll('h3,h4,p')).map(el => el.textContent.trim()).join('\n');
+    }
+
+    const datos = { nombre, png, descripcion };
+    cacheBabosas[url] = datos;
+    return datos;
+}
+
+// Llenar selectores
+function llenarSelector(selectId, babosas) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = "<option value=''>Selecciona...</option>";
+    babosas.forEach(b => {
+        const option = document.createElement('option');
+        option.value = b.url;
+        option.textContent = b.nombre;
+        select.appendChild(option);
+    });
+}
+
+// Mostrar info al seleccionar
+async function mostrarInfo(url) {
+    const infoDiv = document.getElementById('babosa-info');
+    infoDiv.innerHTML = "<p>Cargando datos...</p>";
+    const datos = await obtenerDatosBabosa(url);
+    infoDiv.innerHTML = `
+        <h2>${datos.nombre}</h2>
+        ${datos.png ? `<img src="${datos.png}" alt="${datos.nombre}">` : ''}
+        <pre>${datos.descripcion}</pre>
+    `;
+}
+
+// Inicialización
+async function init() {
+    // Obtener babosas puras y malvadas vía API
+    const puras = await obtenerBabosasDesdeCategoriaAPI('Category:Babosas_puras');
+    const malvadas = await obtenerBabosasDesdeCategoriaAPI('Category:Babosas_Malvadas');
+
+    llenarSelector('puras', puras);
+    llenarSelector('malvadas', malvadas);
+
+    document.getElementById('puras').addEventListener('change', e => {
+        if (e.target.value) mostrarInfo(e.target.value);
+    });
+    document.getElementById('malvadas').addEventListener('change', e => {
+        if (e.target.value) mostrarInfo(e.target.value);
+    });
+}
+
+// Ejecutar inicialización
+init();
+</script>
+
+</body>
+</html>
