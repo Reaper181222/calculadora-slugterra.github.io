@@ -104,102 +104,527 @@
 
 
 
-<body>
 
-<div class="container">
-<h1>Babosas de Bajoterra</h1>
-<div class="selectors">
-    <select id="puras"><option value="">Cargando babosas puras...</option></select>
-    <select id="malvadas"><option value="">Cargando babosas malvadas...</option></select>
-</div>
-<div class="babosa-info" id="babosa-info"><p>Selecciona una babosa para ver sus datos.</p></div>
-</div>
+
+
+
+
+
+<style>
+  :root{
+    --bg:#0b0f14; --card:#111824; --muted:#8aa0b5; --accent:#6dd5ff;
+    --ring:#2b6cb0; --ok:#29a36a; --warn:#d97706; --err:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial; background:linear-gradient(180deg,#0b0f14,#0e141c 40%,#0b0f14); color:#e6edf3}
+  header{padding:18px 20px; border-bottom:1px solid #1f2a37; position:sticky; top:0; backdrop-filter:blur(6px); background:#0b0f14cc}
+  header h1{margin:0; font-size:clamp(18px,2.8vw,24px); letter-spacing:.3px}
+  header p{margin:6px 0 0; color:var(--muted); font-size:14px}
+  main{max-width:1200px; margin:24px auto; padding:0 16px 48px}
+
+  .grid{
+    display:grid; gap:16px;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .controls{
+    grid-column:1/-1;
+    display:grid; gap:12px;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .control{
+    grid-column: span 12;
+    background:var(--card); border:1px solid #1f2a37; border-radius:16px; padding:12px 14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .control label{min-width:160px; font-weight:600; color:#d1e3f0}
+  .control select{
+    flex:1; padding:10px 12px; border-radius:12px; background:#0b1220; color:#e6edf3;
+    border:1px solid #223043; outline:none;
+  }
+  .control select:focus{border-color:var(--ring); box-shadow:0 0 0 3px #2b6cb044}
+
+  .cards{
+    grid-column:1/-1;
+    display:grid; gap:16px;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .card{
+    grid-column: span 12;
+    background:var(--card); border:1px solid #1f2a37; border-radius:20px; overflow:hidden; position:relative;
+  }
+  @media (min-width:900px){
+    .control{grid-column: span 4}
+    .card{grid-column: span 4}
+  }
+  .card header{
+    position:relative; background:linear-gradient(90deg,#122033,#0f1a29);
+    border-bottom:1px solid #1f2a37; padding:14px 16px;
+  }
+  .card header h2{margin:0; font-size:18px}
+  .slot-tag{
+    position:absolute; right:12px; top:12px; font-size:12px; color:#9fb6c9; background:#0b1220; border:1px solid #223043; padding:4px 8px; border-radius:999px;
+  }
+  .content{display:grid; grid-template-columns: 120px 1fr; gap:14px; padding:16px}
+  .thumb{
+    width:100%; aspect-ratio:1/1; background:#0b1220; border:1px dashed #2a3a52; border-radius:12px; display:grid; place-items:center; overflow:hidden;
+  }
+  .thumb img{width:100%; height:100%; object-fit:contain}
+  .kvs{display:grid; gap:8px}
+  .kv{display:flex; gap:8px; align-items:flex-start}
+  .kv dt{min-width:90px; color:#9fb6c9; font-size:13px}
+  .kv dd{margin:0}
+  .attacks{margin-top:6px; padding-left:18px}
+  .muted{color:var(--muted)}
+  .status{padding:10px 14px; border-top:1px solid #1f2a37; color:#9fb6c9; font-size:13px}
+  .loading{color:var(--warn)}
+  .ok{color:var(--ok)}
+  .err{color:var(--err)}
+  .hint{font-size:12px; color:#8aa0b5; margin-left:8px}
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+  <header>
+    <h1>Babosas (Bajoterra) — Puras, Malvadas y Ultra Raras</h1>
+    <p>Elegí una babosa en cada categoría. Al seleccionar, se consulta en vivo a <strong>bajoterra.fandom.com</strong> solo para esa página y se muestran sus datos.</p>
+  </header>
+
+  <main class="grid">
+    <section class="controls">
+      <div class="control">
+        <label for="sel-puras">Babosas <u>puras</u></label>
+        <select id="sel-puras"><option value="">— Elegí una —</option></select>
+        <span class="hint">Carga diferida</span>
+      </div>
+      <div class="control">
+        <label for="sel-malvadas">Babosas <u>malvadas</u></label>
+        <select id="sel-malvadas"><option value="">— Elegí una —</option></select>
+        <span class="hint">Carga diferida</span>
+      </div>
+      <div class="control">
+        <label for="sel-ultra">Babosas <u>ultra raras</u></label>
+        <select id="sel-ultra"><option value="">— Elegí una —</option></select>
+        <span class="hint">Carga diferida</span>
+      </div>
+    </section>
+
+    <section class="cards">
+      <article class="card" id="card-puras">
+        <header><h2>Pura</h2><span class="slot-tag">#1</span></header>
+        <div class="content">
+          <div class="thumb"><span class="muted">Sin imagen</span></div>
+          <div class="kvs">
+            <div class="kv"><dt>Nombre</dt><dd class="kv-name muted">—</dd></div>
+            <div class="kv"><dt>Elemento</dt><dd class="kv-element muted">—</dd></div>
+            <div class="kv"><dt>Rareza</dt><dd class="kv-rare muted">—</dd></div>
+            <div class="kv"><dt>Hábitat</dt><dd class="kv-habitat muted">—</dd></div>
+            <div class="kv"><dt>Ejemplos de Usos<br>para su Habilidad</dt><dd class="kv-attacks muted"><ul class="attacks"></ul></dd></div>
+          </div>
+        </div>
+        <div class="status muted">Elegí una babosa para cargar sus datos.</div>
+      </article>
+
+      <article class="card" id="card-malvadas">
+        <header><h2>Malvada</h2><span class="slot-tag">#2</span></header>
+        <div class="content">
+          <div class="thumb"><span class="muted">Sin imagen</span></div>
+          <div class="kvs">
+            <div class="kv"><dt>Nombre</dt><dd class="kv-name muted">—</dd></div>
+            <div class="kv"><dt>Elemento</dt><dd class="kv-element muted">—</dd></div>
+            <div class="kv"><dt>Rareza</dt><dd class="kv-rare muted">—</dd></div>
+            <div class="kv"><dt>Hábitat</dt><dd class="kv-habitat muted">—</dd></div>
+            <div class="kv"><dt>Ejemplos de Usos<br>para su Habilidad</dt><dd class="kv-attacks muted"><ul class="attacks"></ul></dd></div>
+          </div>
+        </div>
+        <div class="status muted">Elegí una babosa para cargar sus datos.</div>
+      </article>
+
+      <article class="card" id="card-ultra">
+        <header><h2>Ultra rara</h2><span class="slot-tag">#3</span></header>
+        <div class="content">
+          <div class="thumb"><span class="muted">Sin imagen</span></div>
+          <div class="kvs">
+            <div class="kv"><dt>Nombre</dt><dd class="kv-name muted">—</dd></div>
+            <div class="kv"><dt>Elemento</dt><dd class="kv-element muted">—</dd></div>
+            <div class="kv"><dt>Rareza</dt><dd class="kv-rare muted">—</dd></div>
+            <div class="kv"><dt>Hábitat</dt><dd class="kv-habitat muted">—</dd></div>
+            <div class="kv"><dt>Ejemplos de Usos<br>para su Habilidad</dt><dd class="kv-attacks muted"><ul class="attacks"></ul></dd></div>
+          </div>
+        </div>
+        <div class="status muted">Elegí una babosa para cargar sus datos.</div>
+      </article>
+    </section>
+  </main>
 
 <script>
-// Cache para no recargar babosas seleccionadas
-const cacheBabosas = {};
+/* =======================
+   1) Listas limpias
+   ======================= */
+const purasRaw = [
+  "Aquabeek/Aquapico","Aracnired/Telaraña","Arenosa","Babosa Universal","Bengala","Blastipede","Bubbaleone",
+  "Carnero","Congelada","Cristálida","Demoledora","Diggrix","Electroshock","Elemental de Agua","Elemental de Aire",
+  "Elemental de Energía","Elemental de Fuego nueva página","Elemental de Tierra","Emulek","Enigma","Esquirla Helada",
+  "Estropeada","Fandango","Flatulorhinka","Franguadora/Fundeforja","Fósforo","Gazzer","Gelatinosa","Granada","Hexlet",
+  "Hoverbug","Hypnogriff","Iluminabismo","Lariat/Lazada","Magnetosa","Neotox","Nube de Humo","Pieper","Polero",
+  "Punzante","Robobabosas","Sanadora","Terror","Tornado","Torpedo","Trilladora/Machacadora","Versátil","White Boon Doc","Xmitter"
+];
+const malvadasRaw = [
+  "Babosa Amperling","Babosa Aquafreak","Babosa Attacknet","Babosa Barreto","Babosa Bubbalash","Babosa Dark Urchin",
+  "Babosa Doomspiker","Babosa Flaturolex","Babosa Frostfang","Babosa Greneater","Babosa Grimmstone","Babosa Grindsliver",
+  "Babosa Jollyfist","Babosa Necroshard","Babosa Negablade","Babosa Neurotox","Babosa Nocturna","Babosa Pyringo",
+  "Babosa Sand Mangler","Babosa Smuglet","Babosa Tempesto","Babosa Terrarix","Babosa Thrasher","Babosa Vamparo",
+  "Babosa Vexlet","Babosa Vinedrone","Babosa Xbitter","Babosas malvadas","Briardrill","Coalyd","Cryptogrif","Darkfurnus",
+  "Disastipede","Elemental de Agua Malvada","Fundesfiladero","Goon Doc","Hop Jack/Petardo","Hoverblade","Lavamandra",
+  "Megarompedor","Photomo","Z33 (Robobabosa Malvada) (Slug it Out 2)"
+];
+const ultraRaw = ["Cristálida","Enigma","Hypnogriff","Infierno","Midas","Narwhaddle","Pieper"];
 
-// Función para obtener babosas desde la API de Fandom
-async function obtenerBabosasDesdeCategoriaAPI(category) {
-    const url = `https://bajoterra.fandom.com/api.php?action=query&list=categorymembers&cmtitle=${encodeURIComponent(category)}&cmlimit=500&format=json`;
-    const res = await fetch(url);
-    const data = await res.json();
-    return data.query.categorymembers.map(item => ({
-        nombre: item.title,
-        url: `https://bajoterra.fandom.com/wiki/${encodeURIComponent(item.title.replace(/ /g, '_'))}`
-    }));
+// Limpieza: quitar duplicados exactos, letras sueltas, entradas de archivo/imagen y espacios
+const cleanSet = (arr) => {
+  const bad = /^(?:[A-ZÑ]|\s*Archivo:|.*\.(?:png|jpe?g|webp)\s*)$/i;
+  const seen = new Set();
+  return arr
+    .map(s => s.trim())
+    .filter(s => s && !bad.test(s))
+    .filter(s => (seen.has(s) ? false : (seen.add(s), true)));
+};
+
+const puras = cleanSet(purasRaw);
+const malvadas = cleanSet(malvadasRaw);
+const ultra = cleanSet(ultraRaw);
+
+// Para títulos con barra, quedarnos con la primera variante como página base
+const baseName = (name) => name.split("/")[0].trim();
+
+// Convertir a título de wiki (mantiene acentos; reemplaza espacios por guiones bajos)
+const toWikiTitle = (name) => baseName(name).replace(/\s+/g, "_");
+
+// URL base de Fandom
+const WIKI_BASE = "https://bajoterra.fandom.com/wiki/";
+const API = "https://bajoterra.fandom.com/api.php";
+
+/* =======================
+   2) Poblar selects
+   ======================= */
+const selPuras = document.getElementById("sel-puras");
+const selMalvadas = document.getElementById("sel-malvadas");
+const selUltra = document.getElementById("sel-ultra");
+
+function fillSelect(select, items){
+  for(const name of items){
+    const opt = document.createElement("option");
+    opt.value = toWikiTitle(name);
+    opt.textContent = name;
+    select.appendChild(opt);
+  }
+}
+fillSelect(selPuras, puras);
+fillSelect(selMalvadas, malvadas);
+fillSelect(selUltra, ultra);
+
+/* =======================
+   3) Fetch a la MediaWiki API (parse)
+   - Solo cuando el usuario elige (origin=* para CORS)
+   ======================= */
+async function fetchPageHTML(title){
+  const params = new URLSearchParams({
+    action: "parse",
+    page: title,
+    prop: "text|images|sections",
+    format: "json",
+    origin: "*"
+  });
+  const url = `${API}?${params.toString()}`;
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  if(!data.parse) throw new Error("Página no encontrada en la wiki");
+  return {
+    title: data.parse.title,
+    html: data.parse.text["*"]
+  };
 }
 
-// Función para obtener datos de una babosa al seleccionarla
-async function obtenerDatosBabosa(url) {
-    if (cacheBabosas[url]) return cacheBabosas[url];
-    
-    // Fetch del HTML de la babosa usando AllOrigins para CORS
-    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-    const res = await fetch(proxyUrl);
-    const data = await res.json();
-    const doc = new DOMParser().parseFromString(data.contents, 'text/html');
+/* =======================
+   4) Parseo heurístico del HTML de Fandom
+   ======================= */
+function extractFromHTML(html){
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = html;
 
-    const img = doc.querySelector('.pi-image-thumbnail') || doc.querySelector('.wikia-gallery-item img');
-    const png = img ? img.src : '';
-    const nombre = doc.querySelector('.page-header__title')?.textContent.trim() || '';
-    const infobox = doc.querySelector('.portable-infobox');
-    let descripcion = '';
-    if (infobox) {
-        descripcion = Array.from(infobox.querySelectorAll('h3,h4,p')).map(el => el.textContent.trim()).join('\n');
+  // --- Imagen principal ---
+  let imgSrc = null;
+  const infoboxImg = wrapper.querySelector(".portable-infobox .pi-image-thumbnail");
+  if(infoboxImg) imgSrc = infoboxImg.src || infoboxImg.getAttribute("data-src");
+  if(!imgSrc){
+    const imgs = Array.from(wrapper.querySelectorAll("img"));
+    const png = imgs.find(i => /\.png(\?|$)/i.test(i.src || ""));
+    if(png) imgSrc = png.src;
+    else if(imgs[0]) imgSrc = imgs[0].src;
+  }
+
+  const clean = s => (s||"").replace(/\s+/g," ").trim();
+  let element = null, rareza = null, habitat = null;
+
+  // --- datos infobox normales ---
+  const all = Array.from(wrapper.querySelectorAll(".portable-infobox .pi-data"));
+  const pick = (keys) => {
+    for(const key of keys){
+      const node = all.find(n => (n.getAttribute("data-source")||"").toLowerCase().includes(key));
+      if(node){
+        const val = node.querySelector(".pi-data-value");
+        if(val) return clean(val.innerText);
+      }
     }
+    for(const node of all){
+      const label = node.querySelector(".pi-data-label");
+      const value = node.querySelector(".pi-data-value");
+      if(label && value){
+        const t = label.textContent.toLowerCase();
+        if(keys.some(k => t.includes(k))) return clean(value.innerText);
+      }
+    }
+    return null;
+  };
+  element = pick(["elemento","element"]);
+  rareza  = pick(["rareza","rarity"]);
+  habitat = pick(["hábitat","habitat"]);
 
-    const datos = { nombre, png, descripcion };
-    cacheBabosas[url] = datos;
-    return datos;
+  // --- rareza: fallback en tabla de clasificación ---
+  if(!rareza){
+    const cap = Array.from(wrapper.querySelectorAll("caption")).find(c=>/clasificación/i.test(c.textContent));
+    if(cap){
+      const tbl = cap.closest("table");
+      if(tbl){
+        // Imagen en clasificación
+        const img = tbl.querySelector("img");
+        if(img) rareza = mapRarezaFromImg(img.src);
+        // Texto al lado de Rareza
+        const rows = tbl.querySelectorAll("tr");
+        for(const row of rows){
+          const th = row.querySelector("th, td");
+          const td = th && th.nextElementSibling;
+          if(th && /rareza/i.test(th.textContent) && td){
+            rareza = clean(td.innerText);
+          }
+        }
+      }
+    }
+  }
+
+  // --- rareza: fallback con <a href="/wiki/Rareza"><img ...> ---
+  if(!rareza){
+    const rareLink = wrapper.querySelector('a[href*="/wiki/Rareza"] img');
+    if(rareLink){
+      rareza = mapRarezaFromImg(rareLink.src);
+    }
+  }
+
+  // traducir rareza si quedó en inglés
+  if(rareza){
+    const map = {
+      "common":"Común","uncommon":"Poco común",
+      "rare":"Rara","ultra rare":"Ultra rara"
+    };
+    const key = rareza.trim().toLowerCase();
+    if(map[key]) rareza = map[key];
+  }
+
+  // --- elemento: fallback en texto libre ---
+  if(!element){
+    const bodyText = wrapper.innerText;
+    if(/Elemento Tierra/i.test(bodyText))   element = "Tierra";
+    if(/Elemento Fuego/i.test(bodyText))    element = "Fuego";
+    if(/Elemento Agua/i.test(bodyText))     element = "Agua";
+    if(/Elemento Aire/i.test(bodyText))     element = "Aire";
+    if(/Elemento Energ/i.test(bodyText))    element = "Energía";
+    if(/Elemento Planta/i.test(bodyText))   element = "Planta";
+  }
+
+  // --- habilidades/ataques ---
+  const attacks = [];
+  const sectionNames = ["ataques","habilidades"];
+  const stopSections = ["fusiones","portadores","apari","galería","videos"];
+  const headings = wrapper.querySelectorAll("h1,h2,h3,h4,h5");
+
+  for(const h of headings){
+    if(sectionNames.some(sn => new RegExp(sn,"i").test(h.textContent))){
+      // recolectar todo hasta un heading de corte
+      let n = h.nextElementSibling;
+      while(n){
+        if(/^H[1-6]$/i.test(n.tagName)){
+          if(stopSections.some(ss => new RegExp(ss,"i").test(n.textContent))) break;
+        }
+        if(/^(UL|OL)$/i.test(n.tagName)){
+          for(const li of n.querySelectorAll(":scope > li")){
+            const t = clean(li.innerText);
+            if(t) attacks.push(t);
+          }
+        }
+        if(n.tagName==="P"){
+          const t = clean(n.innerText);
+          if(t) attacks.push(t);
+        }
+        n = n.nextElementSibling;
+      }
+    }
+  }
+
+  return { imgSrc, element, rareza, habitat, attacks };
 }
 
-// Llenar selectores
-function llenarSelector(selectId, babosas) {
-    const select = document.getElementById(selectId);
-    select.innerHTML = "<option value=''>Selecciona...</option>";
-    babosas.forEach(b => {
-        const option = document.createElement('option');
-        option.value = b.url;
-        option.textContent = b.nombre;
-        select.appendChild(option);
-    });
+function mapRarezaFromImg(src){
+  const low = (src||"").toLowerCase();
+  if(/common/.test(low))   return "Común";
+  if(/uncommon/.test(low)) return "Poco común";
+  if(/rare/.test(low) && !/ultra/.test(low)) return "Rara";
+  if(/ultra/.test(low))    return "Ultra rara";
+  return null;
 }
 
-// Mostrar info al seleccionar
-async function mostrarInfo(url) {
-    const infoDiv = document.getElementById('babosa-info');
-    infoDiv.innerHTML = "<p>Cargando datos...</p>";
-    const datos = await obtenerDatosBabosa(url);
-    infoDiv.innerHTML = `
-        <h2>${datos.nombre}</h2>
-        ${datos.png ? `<img src="${datos.png}" alt="${datos.nombre}">` : ''}
-        <pre>${datos.descripcion}</pre>
-    `;
+
+
+function cleanText(s){
+  return (s || "")
+    .replace(/\[\s*\]/g,"")
+    .replace(/\s+/g," ")
+    .replace(/^\s+|\s+$/g,"")
+    .replace(/\|.*$/,"") // corta títulos con barras de tabla
+    .trim();
 }
 
-// Inicialización
-async function init() {
-    // Obtener babosas puras y malvadas vía API
-    const puras = await obtenerBabosasDesdeCategoriaAPI('Category:Babosas_puras');
-    const malvadas = await obtenerBabosasDesdeCategoriaAPI('Category:Babosas_Malvadas');
-
-    llenarSelector('puras', puras);
-    llenarSelector('malvadas', malvadas);
-
-    document.getElementById('puras').addEventListener('change', e => {
-        if (e.target.value) mostrarInfo(e.target.value);
-    });
-    document.getElementById('malvadas').addEventListener('change', e => {
-        if (e.target.value) mostrarInfo(e.target.value);
-    });
+/* =======================
+   5) Render en tarjetas
+   ======================= */
+function cardElems(card){
+  return {
+    card,
+    thumb: card.querySelector(".thumb"),
+    name: card.querySelector(".kv-name"),
+    element: card.querySelector(".kv-element"),
+    rare: card.querySelector(".kv-rare"),
+    habitat: card.querySelector(".kv-habitat"),
+    attacksWrap: card.querySelector(".kv-attacks"),
+    attacksUL: card.querySelector(".attacks"),
+    status: card.querySelector(".status")
+  };
 }
 
-// Ejecutar inicialización
-init();
+function setLoading(ui, title, url){
+  ui.status.classList.remove("ok","err");
+  ui.status.classList.add("loading");
+  ui.status.innerHTML = `Cargando desde <a href="${url}" target="_blank" rel="noopener">Fandom</a>…`;
+  ui.name.textContent = title.replace(/_/g," ");
+  ui.name.classList.remove("muted");
+  // limpiar campos
+  ui.element.textContent = "—"; ui.element.classList.add("muted");
+  ui.rare.textContent = "—"; ui.rare.classList.add("muted");
+  ui.habitat.textContent = "—"; ui.habitat.classList.add("muted");
+  ui.attacksWrap.classList.add("muted");
+  ui.attacksUL.innerHTML = "";
+  ui.thumb.innerHTML = `<span class="muted">Sin imagen</span>`;
+}
+
+function setError(ui, msg){
+  ui.status.classList.remove("ok","loading");
+  ui.status.classList.add("err");
+  ui.status.textContent = `Error: ${msg}`;
+}
+
+function setOK(ui){
+  ui.status.classList.remove("err","loading");
+  ui.status.classList.add("ok");
+  ui.status.textContent = "Datos cargados.";
+}
+
+function renderData(ui, data){
+  const {imgSrc, element, rareza, habitat, attacks} = data;
+
+  if(imgSrc){
+    ui.thumb.innerHTML = `<img alt="Imagen" referrerpolicy="no-referrer" src="${imgSrc}">`;
+  }
+
+  if(element){ ui.element.textContent = element; ui.element.classList.remove("muted"); }
+  else { ui.element.textContent = "No encontrado en la wiki"; ui.element.classList.add("muted"); }
+
+  if(rareza){ ui.rare.textContent = rareza; ui.rare.classList.remove("muted"); }
+  else { ui.rare.textContent = "No encontrado en la wiki"; ui.rare.classList.add("muted"); }
+
+  if(habitat){ ui.habitat.textContent = habitat; ui.habitat.classList.remove("muted"); }
+  else { ui.habitat.textContent = "No encontrado en la wiki"; ui.habitat.classList.add("muted"); }
+
+  if(attacks && attacks.length){
+    ui.attacksUL.innerHTML = "";
+    for(const a of attacks){
+      const li = document.createElement("li");
+      li.textContent = a;
+      ui.attacksUL.appendChild(li);
+    }
+    ui.attacksWrap.classList.remove("muted");
+  }else{
+    ui.attacksUL.innerHTML = "";
+    ui.attacksWrap.classList.add("muted");
+    ui.attacksWrap.innerHTML = `<ul class="attacks"><li>No se listan ataques en la página</li></ul>`;
+  }
+}
+
+/* =======================
+   6) Controladores: cada select llena su tarjeta correspondiente
+   ======================= */
+const cardPuras = cardElems(document.getElementById("card-puras"));
+const cardMalv = cardElems(document.getElementById("card-malvadas"));
+const cardUltra = cardElems(document.getElementById("card-ultra"));
+
+async function handleSelect(select, ui){
+  const val = select.value;
+  if(!val){
+    ui.status.classList.remove("ok","err","loading");
+    ui.status.textContent = "Elegí una babosa para cargar sus datos.";
+    ui.thumb.innerHTML = `<span class="muted">Sin imagen</span>`;
+    ui.name.textContent = "—"; ui.name.classList.add("muted");
+    ui.element.textContent = "—"; ui.element.classList.add("muted");
+    ui.rare.textContent = "—"; ui.rare.classList.add("muted");
+    ui.habitat.textContent = "—"; ui.habitat.classList.add("muted");
+    ui.attacksUL.innerHTML = ""; ui.attacksWrap.classList.add("muted");
+    return;
+  }
+  const pageURL = `${WIKI_BASE}${encodeURIComponent(val)}`;
+  setLoading(ui, val, pageURL);
+  try{
+    const {title, html} = await fetchPageHTML(val);
+    const data = extractFromHTML(html);
+    // nombre final desde título real de la página
+    ui.name.textContent = title || val.replace(/_/g," ");
+    ui.name.classList.remove("muted");
+    renderData(ui, data);
+    setOK(ui);
+  }catch(err){
+    setError(ui, err.message || "Fallo desconocido");
+  }
+}
+
+selPuras.addEventListener("change", () => handleSelect(selPuras, cardPuras));
+selMalvadas.addEventListener("change", () => handleSelect(selMalvadas, cardMalv));
+selUltra.addEventListener("change", () => handleSelect(selUltra, cardUltra));
+
+/* =======================
+   7) Ejemplos rápidos (puedes borrar):
+   Descomenta para precargar “Infierno” en Ultra.
+   ======================= */
+// selUltra.value = toWikiTitle("Infierno");
+// handleSelect(selUltra, cardUltra);
 </script>
-
 </body>
+
+
+
+
+
+
+
+
+  
 
 
 
@@ -213,6 +638,7 @@ init();
 
 
 </html>
+
 
 
 
